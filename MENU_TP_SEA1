@@ -1,0 +1,158 @@
+local UIS = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local starterGui = player:WaitForChild("PlayerGui")
+local backpack = player:WaitForChild("Backpack")
+
+-- Tạo GUI chính
+local screenGui = Instance.new("ScreenGui", starterGui)
+screenGui.ResetOnSpawn = false
+
+-- Tông màu
+local backgroundColor = Color3.fromRGB(9, 50, 90) -- Aqua
+local buttonColor = Color3.fromRGB(170, 0, 255) -- Tím light
+local textColor = Color3.fromRGB(255, 255, 255) -- Trắng
+
+-- Dữ liệu nút
+local buttonsData = {
+    {Name = "SEA", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SEA/refs/heads/main/TICKEN_SEA"))() end},
+    {Name = "Pirate", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_PIRATE/refs/heads/main/TICKEN_PIRATE"))() end},
+    {Name = "Fountain", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FOUNTAIN/refs/heads/main/TICKEN_FOUNTAIN"))() end},
+    {Name = "SKY", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SKY/refs/heads/main/TICKEN_SKY"))() end},
+    {Name = "ARENA", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ARENA/refs/heads/main/TICKEN_ARENA"))() end},
+    {Name = "Mirane", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MIRANE/refs/heads/main/TICKEN_MIRANE"))() end},
+    {Name = "Monkey", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_MONKEY/refs/heads/main/TICKEN_MONKEY"))() end},
+    {Name = "Village", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_VILLAGE/refs/heads/main/TICKEN_VILLAGE"))() end},
+    {Name = "Prison", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_PRISON/refs/heads/main/TICKEN_PRISON"))() end},
+    {Name = "Volcano", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_VOLCANO/refs/heads/main/TICKEN_VOLCANO"))() end},
+    {Name = "Fortress", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FORTRESS/refs/heads/main/TICKEN_FORTRESS"))() end},
+    {Name = "Desert", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DESERT/refs/heads/main/TICKEN_DESERT"))() end},
+    {Name = "Town", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOWN/refs/heads/main/TICKEN_TOWN"))() end},
+    {Name = "On_sky", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_SKY/refs/heads/main/TICKEN_ON_SKY"))() end}
+}
+
+-- Kích thước và vị trí mặc định
+local menuWidth, menuHeight = 400, 300
+local menuPosX, menuPosY = 100, 100
+
+-- Frame Menu chính
+local menuFrame = Instance.new("Frame", screenGui)
+menuFrame.Size = UDim2.new(0, menuWidth, 0, menuHeight)
+menuFrame.Position = UDim2.new(0, menuPosX, 0, menuPosY)
+menuFrame.BackgroundColor3 = backgroundColor
+menuFrame.Visible = false -- Ban đầu ẩn
+menuFrame.Active = true
+menuFrame.Draggable = true
+
+local uiCorner = Instance.new("UICorner", menuFrame)
+uiCorner.CornerRadius = UDim.new(0.1, 0)
+
+-- ScrollFrame cho nút
+local buttonContainer = Instance.new("ScrollingFrame", menuFrame)
+buttonContainer.Size = UDim2.new(1, -20, 1, -80)
+buttonContainer.Position = UDim2.new(0, 10, 0, 60)
+buttonContainer.BackgroundTransparency = 1
+buttonContainer.ScrollBarThickness = 5
+
+local layout = Instance.new("UIGridLayout", buttonContainer)
+layout.CellSize = UDim2.new(0, 120, 0, 40)
+layout.CellPadding = UDim2.new(0, 10, 0, 10)
+
+-- Thanh tìm kiếm
+local searchBox = Instance.new("TextBox", menuFrame)
+searchBox.Size = UDim2.new(0.8, 0, 0, 30)
+searchBox.Position = UDim2.new(0.1, 0, 0, 10)
+searchBox.PlaceholderText = "Search..."
+searchBox.Text = ""
+searchBox.TextColor3 = textColor
+searchBox.BackgroundColor3 = buttonColor
+searchBox.Font = Enum.Font.SourceSans
+searchBox.TextScaled = true
+
+local searchCorner = Instance.new("UICorner", searchBox)
+searchCorner.CornerRadius = UDim.new(0.1, 0)
+
+-- Thêm nút vào menu
+local function addButton(name, scriptFunc)
+    local button = Instance.new("TextButton", buttonContainer)
+    button.Size = UDim2.new(0, 120, 0, 40)
+    button.Text = name
+    button.BackgroundColor3 = buttonColor
+    button.TextColor3 = textColor
+    button.Font = Enum.Font.SourceSansBold
+    button.TextScaled = true
+
+    button.MouseButton1Click:Connect(function()
+        scriptFunc()
+    end)
+end
+
+-- Cập nhật nút theo tìm kiếm
+local function updateButtons()
+    for _, button in ipairs(buttonContainer:GetChildren()) do
+        if button:IsA("TextButton") then
+            button:Destroy()
+        end
+    end
+
+    local searchText = searchBox.Text:lower()
+    for _, buttonData in ipairs(buttonsData) do
+        if buttonData.Name:lower():find(searchText) then
+            addButton(buttonData.Name, buttonData.Script)
+        end
+    end
+end
+
+searchBox.Changed:Connect(updateButtons)
+
+-- Ban đầu tải các nút
+updateButtons()
+
+-- Tạo item Menu
+local menuItem = Instance.new("Tool")
+menuItem.Name = "Menu TP"
+menuItem.Parent = backpack
+
+-- Tạo mô hình item Menu
+local menuModel = Instance.new("Part")
+menuModel.Size = Vector3.new(1, 1, 1)
+menuModel.Shape = Enum.PartType.Block
+menuModel.Color = Color3.fromRGB(75, 0, 130) -- Tím đậm
+menuModel.Name = "Handle"
+menuModel.Anchored = false
+menuModel.CanCollide = false
+menuModel.Parent = menuItem
+
+-- Tạo mô hình cầm tay giống điện thoại
+local phoneModel = Instance.new("Part")
+phoneModel.Size = Vector3.new(0.5, 1.5, 0.2)
+phoneModel.Color = Color3.fromRGB(75, 0, 130)
+phoneModel.Shape = Enum.PartType.Cylinder
+phoneModel.Name = "Handle"
+phoneModel.Anchored = false
+phoneModel.CanCollide = false
+phoneModel.Parent = menuItem
+
+local phoneLabel = Instance.new("TextLabel", phoneModel)
+phoneLabel.Size = UDim2.new(1, 0, 0.1, 0)
+phoneLabel.Position = UDim2.new(0, 0, 0.9, 0)
+phoneLabel.Text = "HAPPY"
+phoneLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+phoneLabel.BackgroundTransparency = 1
+phoneLabel.Font = Enum.Font.SourceSansBold
+phoneLabel.TextScaled = true
+
+-- Hiện/ẩn menu khi cầm item Menu
+menuItem.Equipped:Connect(function()
+    menuFrame.Visible = true
+end)
+
+menuItem.Unequipped:Connect(function()
+    menuFrame.Visible = false
+end)
+
+-- Khi chết hoặc reset, trả lại item Menu
+player.CharacterAdded:Connect(function()
+    wait(1) -- Đợi 1 giây để đảm bảo nhân vật được tạo
+    menuItem.Parent = backpack
+end)
