@@ -28,7 +28,9 @@ local buttonsData = {
     {Name = "Fortress", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_FORTRESS/refs/heads/main/TICKEN_FORTRESS"))() end},
     {Name = "Desert", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_DESERT/refs/heads/main/TICKEN_DESERT"))() end},
     {Name = "Town", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_TOWN/refs/heads/main/TICKEN_TOWN"))() end},
-    {Name = "On_sky", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_SKY/refs/heads/main/TICKEN_ON_SKY"))() end}
+    {Name = "On_sky", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_ON_SKY/refs/heads/main/TICKEN_ON_SKY"))() end},
+    {Name = "Snow", Script = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/HAPPY-script/TICKEN_SNOW/refs/heads/main/TICKEN_SNOW"))() end}
+
 }
 
 -- Kích thước và vị trí mặc định
